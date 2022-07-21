@@ -1,92 +1,78 @@
-// // Assignment Code
-// var generateBtn = document.querySelector("#generate");
+// Variables
+var generateBtn = document.querySelector("#generate")
 
-// // Write password to the #password input
-// function writePassword() {
-//   var password = generatePassword();
-//   var passwordText = document.querySelector("#password");
+var lCaseChars = "abcdefghijklmnopqrstuvwxyz"
+var uCaseChars = "ABCDEFGHIJKLMNOPQRSTUZWXYZ"
+var numberChars = "0123456789"
+var specialChars = "!#$%&'()[]{}*+-_.,:;<=>?@^`~"
 
-//   passwordText.value = password;
+var passwordChars = ""
+var createdPassword = ""
 
-// }
+var characterLength 
+var lowercase 
+var uppercase 
+var numbers 
+var special 
 
-// // Add event listener to generate button
-// generateBtn.addEventListener("click", writePassword);
+function writePassword() {
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password");
 
-// Variable Section
-var lowercase = "abcdefghijklmnopqrstuvwxyz";
-var uppercase = "ABCDEFGHIJKLMNOPQRSTUZWXYZ";
-var numbers = "0123456789";
-var special = "!#$%&'()*+,-./:;<=>?@[\]^_`{|}~";
-var passwordReturn = document.querySelector ("#password");
-var generator = document.querySelector ("#generate");
+  passwordText.value = password
+}
 
-// Generate Function
-function createPassword () {
-
-var password = "";
-var passwordSelect = "";
-
-//Character Length Selection
-var passwordLength = window.prompt ("What length would you like your password to be?");
-    if (
-// Character Validity Checker
-    passwordLength >128 ||  passwordLength <8 ) { window.alert ("Please enter a valid number, between 8 and 128.");
-    return;}
-// Include Number Selection
-var characterSettings0 = window.confirm ("Include numbers?");
-    console.log (characterSettings0);
-
-    if (characterSettings0) {passwordSelect += numbers;} 
-    console.log (passwordSelect);
-// Include Special Character Selection      
-var characterSettings1 = window.confirm ("Include special characters?");
-    console.log (characterSettings1);
-
-    if (characterSettings1) {passwordSelect += special;} 
-    console.log (passwordSelect);
-// Include Lowercase Letters Selection      
-
-var characterSettings2 = window.confirm ("Include lowercase letters?");
-    console.log (characterSettings2);
-
-    if (characterSettings2) {passwordSelect += lowercase;} 
-    console.log (passwordSelect);
-// Include Uppercase Letters Selection      
-var characterSettings3 = window.confirm("Include uppercase letters?");
-    console.log (characterSettings3);
-
-    if (characterSettings3) {passwordSelect += uppercase;} 
-    console.log (passwordSelect);
-
-// Has the Minimum Criteria Been Met?
+function generatePassword() {
     
-    if (passwordSelect === "") {window.alert("You must choose at least one option of character types to include!");}
+    characterLength= prompt(
+        "How many characters would you like your password to contain?"
+        )
+    
+    if (characterLength < 8 || characterLength > 128 || !characterLength.match(/^[0-9]+$/)) {
+      console.log(characterLength)
+      alert("Please select a valid number length, between 8 and 128 characters.")
+      characterLength = prompt (
+        "How many characters would you like your password to contain?"
+        )
+    }
+        
+      
+    lowercase = confirm(
+        "Would you like your password to contain Lowercase characters?"
+    )
+    uppercase = confirm(
+        "Would you like your password to contain Uppercase characters?"
+    )
+    numbers = confirm (
+        "Would you like your password to contain Numbers?"
+    )
+    special = confirm (
+        "Would you like your password to contain Special characters?"
+    )
 
-// Character Randomizer Functions
+    if (lowercase) {
+      passwordChars += lCaseChars
+    }
+    if (uppercase) {
+      passwordChars += uCaseChars
+    }
+    if (numbers) {
+      passwordChars += numberChars
+    }
+    if (special) {
+        passwordChars += specialChars
+    }
+    
+    console.log (passwordChars)
+    
+    for (var i = 0; i < characterLength; i++) {
+    
+      var char = Math.floor(Math.random() * passwordChars.length)
+      createdPassword += passwordChars[char]
+    }
+    return createdPassword
+}
 
-    if (passwordLength >8 && passwordLength <128) {
-    for (var i = 0; i < passwordLength; i++) {
-    password += passwordSelect.charAt(Math.floor(Math.random() * passwordSelect.length));};
-              
-// place this generated password in the local storage
-    localStorage.setItem ("password", password);
-var password = localStorage.getItem ("password");
-    console.log (password);
-    return password;
-    };
-    };
+// Add event listener to generate button
+generateBtn.addEventListener("click", writePassword);
 
-// Push Information Back to HTML Textbox
-
-    function displayPassword () {
-var password = createPassword ();
-var passwordReturn = document.querySelector ("#password");
-    passwordReturn.value = password;
-    };
-
-// Link to Generator Element
-var generator = document.querySelector ("#generate");
-
-// Event Listener to HTML Generate Button
-    generator.addEventListener("click", displayPassword);
